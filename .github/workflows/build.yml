@@ -1,0 +1,22 @@
+name: Build C++ DLL
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Build Project
+      run: msbuild "Educational Memory Finder.sln" /p:Configuration=Release /p:Platform=x64
+
+    - name: Upload DLL
+      uses: actions/upload-artifact@v4
+      with:
+        name: dumps-dll
+        path: x64/Release/*.dll
